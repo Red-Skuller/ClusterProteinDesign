@@ -4,7 +4,6 @@
 #SBATCH --exclude=compute-0-11
 
 # Load Anaconda environment
-source /home/tsatler/anaconda3/etc/profile.d/conda.sh
 
 input=$1
 input_pdbs=($(cat "$input"))
@@ -20,6 +19,6 @@ xml_file=$5
 ########################
 echo "Running binder analysis"
 
-conda activate colabthread
+source ~/anaconda3/bin/activate colabthread-tsatler
 
 python helper_scripts/binder_analysis.py $pdb $target_chain $binder_chain $out_file $xml_file
