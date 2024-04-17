@@ -8,6 +8,8 @@ scaffolds/*
 *.log
 *.csv
 *.txt
+*.png
+*.trb
 pipelines/colabfold_af2/output/*
 pipelines/msa_mpnn_af2/output/*
 pipelines/msa_mpnn_af2/helper_scripts/__pycache__
