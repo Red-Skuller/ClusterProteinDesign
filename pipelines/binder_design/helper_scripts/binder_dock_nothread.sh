@@ -26,8 +26,9 @@ echo $scaff_string
 prefix=$7
 target_pdb=$8
 output="output/$prefix" # output gets created by rfdiffusion
-hotspots=$9
-echo $hotspots
+rfdiff_config=$9
+rfdiff_config_string=$(echo "$rfdiff_config" | sed 's/+/ /g')
+echo $rfdiff_config_string
 for scaff_dir in "${scaff_list[@]}"
 do
   subfolder_name=$(basename "$scaff_dir")
@@ -65,24 +66,19 @@ do
   source /home/lhafner/anaconda3/bin/activate SE3nv-auto
 
   python /home/lhafner/RFdiffusion/scripts/run_inference.py \
-  diffuser.T=50 \
   scaffoldguided.target_path=$target_pdb \
   inference.output_prefix=${rf_out} \
   scaffoldguided.scaffoldguided=True \
-  $hotspots \
   scaffoldguided.target_pdb=True \
   scaffoldguided.target_ss=$ss \
   scaffoldguided.target_adj=$adj \
   scaffoldguided.scaffold_dir=$scaff_dir \
   scaffoldguided.mask_loops=False \
-  'potentials.guiding_potentials=["type:binder_ROG,weight:3"]' \
-  potentials.guide_scale=2 \
-  potentials.guide_decay="quadratic" \
   inference.num_designs=$num_of_diffusions \
-  denoiser.noise_scale_ca=0 \
-  denoiser.noise_scale_frame=0
-
+  $rfdiff_config_string
+  #$hotspots \
   #"type:binder_distance_ReLU",
+  #"type:interface_ncontacts",
   
   # Remove some files
   current_dir=$(pwd)
