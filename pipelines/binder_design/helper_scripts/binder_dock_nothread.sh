@@ -50,7 +50,7 @@ do
   if [ ! -f "$ss" ] || [ ! -f "$adj" ]; then
     echo "One or both of the SS and ADJ files do not exist. Running Python script to generate them..."
     
-    source /home/lhafner/anaconda3/bin/activate pyrosetta
+    source ~/anaconda3/bin/activate pyrosetta
     # Run Python script to generate ss and adj files
     python helper_scripts/make_secstruc_adj.py --input_pdb "$target_pdb" --out_dir "$out_dir"
     
@@ -65,7 +65,7 @@ do
   # Do something if folder/files already exist
   source /home/lhafner/anaconda3/bin/activate SE3nv-auto
 
-  python /home/lhafner/RFdiffusion/scripts/run_inference.py \
+  python ~/RFdiffusion/scripts/run_inference.py \
   scaffoldguided.target_path=$target_pdb \
   inference.output_prefix=${rf_out} \
   scaffoldguided.scaffoldguided=True \
@@ -100,7 +100,7 @@ do
   ########################
   echo "Running AFDesign with MPNN sampling... (and threading)"
 
-  source /home/lhafner/anaconda3/bin/activate colabthread-tsatler
+  source ~/anaconda3/bin/activate colabthread-tsatler
 
   input_files=(${rf_out}*.pdb)
   echo $input_files
