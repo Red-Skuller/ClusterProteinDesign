@@ -29,6 +29,26 @@ output="output/$prefix" # output gets created by rfdiffusion
 rfdiff_config=$9
 rfdiff_config_string=$(echo "$rfdiff_config" | sed 's/+/ /g')
 echo $rfdiff_config_string
+
+# Generate ss, adj, and out_dir variables based on target_pdb
+target_dir="$(dirname "$target_pdb")"
+target_base="$(basename "${target_pdb%.*}")"
+ss="${target_dir}/${target_base}_ss.pt"
+adj="${target_dir}/${target_base}_adj.pt"
+out_dir="${target_dir}/"
+
+# Check if ss and adj files exist
+if [ ! -f "$ss" ] || [ ! -f "$adj" ]; then
+  echo "One or both of the SS and ADJ files do not exist. Running Python script to generate them..."
+  
+  source ~/anaconda3/bin/activate pyrosetta
+  # Run Python script to generate ss and adj files
+  python helper_scripts/make_secstruc_adj.py --input_pdb "$target_pdb" --out_dir "$out_dir"
+  
+else
+  echo "SS and ADJ files already exist."
+fi
+
 for scaff_dir in "${scaff_list[@]}"
 do
   subfolder_name=$(basename "$scaff_dir")
@@ -40,23 +60,7 @@ do
   ########################
   echo "Doing $((num_of_diffusions * num_seqs)) designs!"
 
-  # Generate ss, adj, and out_dir variables based on target_pdb
-  target_dir="$(dirname "$target_pdb")"
-  target_base="$(basename "${target_pdb%.*}")"
-  ss="${target_dir}/${target_base}_ss.pt"
-  adj="${target_dir}/${target_base}_adj.pt"
-  out_dir="${target_dir}/"
-  # Check if ss and adj files exist
-  if [ ! -f "$ss" ] || [ ! -f "$adj" ]; then
-    echo "One or both of the SS and ADJ files do not exist. Running Python script to generate them..."
-    
-    source ~/anaconda3/bin/activate pyrosetta
-    # Run Python script to generate ss and adj files
-    python helper_scripts/make_secstruc_adj.py --input_pdb "$target_pdb" --out_dir "$out_dir"
-    
-  else
-    echo "SS and ADJ files already exist."
-  fi
+
 
   echo Running RFdiffusion for docking scaffolds to the target...
 
