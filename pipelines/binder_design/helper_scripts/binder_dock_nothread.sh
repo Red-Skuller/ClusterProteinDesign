@@ -49,6 +49,8 @@ else
   echo "SS and ADJ files already exist."
 fi
 
+echo "$rfdiff_config_string" > "$output/rfdiff_config.txt"
+
 for scaff_dir in "${scaff_list[@]}"
 do
   subfolder_name=$(basename "$scaff_dir")
