@@ -98,7 +98,7 @@ do
       rm -r "$output/rf_dock/${prefix}_${subfolder_name}_${SLURM_ARRAY_TASK_ID}/traj" # delete trajectories
   fi
   echo "$hotspots" > "$output/hotspots.txt"
-  
+  echo "$rfdiff_config_string" > "$output/rfdiff_config.txt"
   ########################
   # ProteinMPNN and AF2
   ########################
