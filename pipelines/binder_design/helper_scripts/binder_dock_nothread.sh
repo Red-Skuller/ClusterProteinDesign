@@ -25,6 +25,7 @@ echo $scaff_string
 
 prefix=$7
 target_pdb=$8
+echo $target_pdb
 output="output/$prefix" # output gets created by rfdiffusion
 rfdiff_config=$9
 rfdiff_config_string=$(echo "$rfdiff_config" | sed 's/+/ /g')
